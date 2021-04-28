@@ -10,7 +10,7 @@ public class ChkMerchantTxnStatus {
     public static String CHK_MERCHANT_TXN_STATUS_URL = "/payment/payment/chkMerchantTxnStatus";
 
     public Response chkMerchantTxnStatus() {
-        RestAssured.proxy("proxy.rwe.com",8080);
+//        RestAssured.proxy("proxy.xxx.com",xxxx);
         Response response=SerenityRest.given().
                 header("Authorization", SessionVariableHolder.authorizationKey).
                 formParam("merchantKey",SessionVariableHolder.merchantKey).

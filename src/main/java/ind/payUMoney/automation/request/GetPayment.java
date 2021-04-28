@@ -10,7 +10,7 @@ public class GetPayment {
 
     public Response getPayment(String merchantKey, String merchantTransactionIds, String authorizationKey) {
         RestAssured.baseURI="https://test.payumoney.com";
-        RestAssured.proxy("proxy.rwe.com",8080);
+//        RestAssured.proxy("proxy.xxx.com",xxxx);
         Response response=SerenityRest.given().
                 header("Authorization",authorizationKey).
                 formParam("merchantKey",merchantKey).

@@ -21,7 +21,7 @@ public class Authentication extends PageObject {
     public Response getOAuthToken(String username, String password) {
         String storeBaseURI = RestAssured.baseURI;
         RestAssured.baseURI = oAuthBaseURL;
-
+//        RestAssured.proxy("proxy.xxx.com",xxxx);
         LinkedHashMap request_body = new LinkedHashMap();
         JSONObject payload = new JSONObject();
         payload.put("client_id",oAuthClientID );

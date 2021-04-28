@@ -10,7 +10,7 @@ public class GetPayment {
     public static String GET_PAYMENT_URL = "/payment/op/getPaymentResponse";
 
     public Response getPayment() {
-        RestAssured.proxy("proxy.rwe.com",8080);
+//        RestAssured.proxy("proxy.xxx.com",xxxx);
         Response response=SerenityRest.given().
                 header("Authorization", SessionVariableHolder.authorizationKey).
                 formParam("merchantKey",SessionVariableHolder.merchantKey).

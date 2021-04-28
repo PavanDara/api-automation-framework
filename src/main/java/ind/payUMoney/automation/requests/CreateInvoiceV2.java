@@ -27,7 +27,7 @@ public class CreateInvoiceV2 {
     AccountMapper accountMapper;
 
     public Response createInvoice() {
-        RestAssured.proxy("proxy.rwe.com",8080);
+//        RestAssured.proxy("proxy.xxx.com",xxxx);
         Response response=SerenityRest.given().contentType(ContentTypes.APPLICATION_JSON).
                 header("Authorization", "Bearer " + SessionVariableHolder.authentication_token).
                 header("merchantId",accountMapper.getAccountData("username")).
