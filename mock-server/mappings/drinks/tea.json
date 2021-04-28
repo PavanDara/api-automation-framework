@@ -1,0 +1,13 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/endpoint/drinks/tea"
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "text/xml"
+    },
+    "bodyFileName": "drinks/tea.xml"
+  }
+}
