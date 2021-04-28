@@ -21,7 +21,7 @@ public class GetPaymentStepDefinitions {
     }
 
     @Then("^I can see (.*) Ok in the response$")
-    public void responseReceivedWithStatusCodeForGetAddressDetails(long statusCode) {
+    public void responseReceivedWithStatusCodeForGetPayment(long statusCode) {
         Assert.assertEquals(statusCode, get_address_response.getStatusCode());
     }
 

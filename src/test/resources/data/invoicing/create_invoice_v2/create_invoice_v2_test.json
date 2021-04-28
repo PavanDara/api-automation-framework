@@ -4,7 +4,20 @@
       "invoice_id": "INVxxxx",
       "merchant_id": "MERxxxx",
       "username": "9999999999",
-      "password": "fsd1@123"
+      "password": "fsd1@123",
+      "adjustment": "123.32",
+      "subAmount": "200.005",
+      "email": "autoregister2@gmail.com",
+      "addressCity": "Gurugram",
+      "addressPin": "122001",
+      "addressState": "Haryana",
+      "addressStreet1": "266",
+      "addressStreet2": "near landmark",
+      "description": "For collection tax",
+      "furl": "https://www.payumoney.com/invoice/failresponse",
+      "surl": "https://www.payumoney.com/invoice/successresponse",
+      "maxPaymentsAllowed": 20,
+      "minAmountForCustomer": "100.0"
     }
   }
 }

@@ -27,10 +27,15 @@ public class CreateInvoiceV2StepDefinitions {
         Assert.assertEquals(statusCode, create_invoice_response.getStatusCode());
     }
 
-    @And("^Create invoice v2 api response contains valid amount, paymentId and transaction status$")
+    @And("^Create invoice v2 api response contains valid amount, invoiceId and transaction status$")
     public void verifyCreateInvoiceV2Response() {
-        Assert.assertNotNull(create_invoice_response.then().extract().path("invoices.dunning_level"));
-//        Assert.assertEquals(expected_electricity,chk_merchant_txn_status_response.then().extract().path("electricity.total").toString());
+        Assert.assertNotNull(create_invoice_response.then().extract().path("result.id"));
+        Assert.assertNotNull(create_invoice_response.then().extract().path("result.amount"));
+        Assert.assertNotNull(create_invoice_response.then().extract().path("result.totalAmount"));
+        Assert.assertNotNull(create_invoice_response.then().extract().path("result.status"));
+        Assert.assertNotNull(create_invoice_response.then().extract().path("result.amountCollected"));
+        Assert.assertNotNull(create_invoice_response.then().extract().path("result.amountDue"));
+        Assert.assertNotNull(create_invoice_response.then().extract().path("status"));
     }
 
 

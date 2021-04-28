@@ -1,6 +1,7 @@
 @node=payment_inquiry @endpoint=get_payment_response
 Feature: Payumoney APIs to enquire regarding a transaction done through Payumoney.
 
+  @Completed
   Scenario: Get Payment Response
     Given merchantKey is valid and merchantTransactionId is valid
     When I trigger getPaymentResponse API request with valid authorization Id

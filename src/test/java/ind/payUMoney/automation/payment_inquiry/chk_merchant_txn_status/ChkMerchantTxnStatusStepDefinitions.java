@@ -29,7 +29,7 @@ public class ChkMerchantTxnStatusStepDefinitions {
     @And("^chkMerchantTxnStatus response contains valid amount, paymentId and transaction status$")
     public void verifyChkMerchantTxnStatusResponse() {
         Assert.assertNotNull(chk_merchant_txn_status_response.then().extract().path("invoices.dunning_level"));
-//        Assert.assertEquals(expected_electricity,chk_merchant_txn_status_response.then().extract().path("electricity.total").toString());
+//        Assert.AssertNotNull(chk_merchant_txn_status_response.then().extract().path("result.amount").toString());
     }
 
 

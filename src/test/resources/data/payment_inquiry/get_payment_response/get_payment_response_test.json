@@ -1,0 +1,8 @@
+{
+  "accounts": {
+    "default-user": {
+      "invoice_id": "INVxxxx",
+      "merchant_id": "MERxxxx"
+    }
+  }
+}
