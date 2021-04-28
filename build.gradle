@@ -23,21 +23,29 @@ targetCompatibility = 1.8
 
 dependencies {
     compile "net.serenity-bdd:serenity-core:${SerenityCoreVersion}"
-//    compile "net.serenity-bdd:serenity-screenplay:${SerenityCoreVersion}"
-//    compile "net.serenity-bdd:serenity-screenplay-webdriver:${SerenityCoreVersion}"
+    compile "net.serenity-bdd:serenity-screenplay:${SerenityCoreVersion}"
+    compile "net.serenity-bdd:serenity-screenplay-webdriver:${SerenityCoreVersion}"
     compile "net.serenity-bdd:serenity-cucumber:${SerenityCucumberVersion}"
-    compile group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: '2.0.17'
     compile "org.assertj:assertj-core:${assertJVersion}"
     compile "org.slf4j:slf4j-simple:${slf4jVersion}"
     compile group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1'
-    compile group: 'org.apache.poi', name: 'poi-ooxml', version: '4.0.1'
-
     testCompile "junit:junit:${junitVersion}"
+    compile 'org.slf4j:slf4j-api:1.7.13'
+    compile group: 'javax.xml.bind', name: 'jaxb-api', version: '2.2.4'
+    compile group: 'org.json', name: 'json', version: '20180813'
+    compile group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: "${SerenityCoreVersion}"
+    compile group: 'javax.jms', name: 'jms', version: '1.1'
+    compile group: 'javax.jms', name: 'javax.jms-api', version: '2.0.1'
+    compile fileTree(include: ['*.jar'], dir: 'libs')
 }
 
 test {
     testLogging.showStandardStreams = true
+    testLogging.showStandardStreams = true
+    systemProperty "cucumber.options", System.getProperty("cucumber.options")
+    systemProperty "env", System.getProperty("env")
     systemProperty "proxy", System.getProperty("proxy")
+    testLogging.showStandardStreams = true
     systemProperties System.getProperties()
 }
 

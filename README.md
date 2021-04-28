@@ -1,37 +1,26 @@
-# Essent test automation seed
-## Forked from
+#### Automation of PayUMoney APIs
 
-Git:
+**Pre-requisites :**  
+Java Run Time Environment installed on the system
 
-    git clone https://github.com/serenity-bdd/serenity-cucumber-starter.git
-    cd serenity-cucumber-starter
-[Base docs](https://github.com/serenity-bdd/serenity-cucumber-starter)
+**Frame work details :**  
+Framework used : Serenity (http://thucydides.info/docs/serenity-staging/)  
+Serenity BDD is an open source library that aims to make the idea of living documentation a reality. Serenity BDD helps you write cleaner and more maintainable automated acceptance and regression tests faster. Serenity also uses the test results to produce illustrated, narrative reports that document and describe what your application does and how it works. Serenity tells you not only what tests have been executed, but more importantly, what requirements have been tested.
 
-## Run project
-```
-./gradlew clean test aggregate --rerun-tasks (optionals: -DtestData=test.json)
-```
+Build Tool Used : Gradle (https://docs.gradle.org/current/userguide/userguide.html)
 
-## Intro
-Serenity is an all in one solution for creating BDD tests. This repository 
-is a seed project for implementing BDD without any additional platform specific
-implementations.
+Note : For gradle we are including the wrapper as part of the project, so no need to install it separately.
 
-Seeds for Web and App can be found here:
-```
-/web
-/app
-```
+**Clone Project :**
 
-## Content
-### Seed
-All BDD test code (step definitions, runners) should be put in src/test/java and all helper code should be put in src/main/java.
+**Writing BDD Features**  
+Gherkin files (src/test/resources/features/chk_Merchant_Txn_Status.feature)
+Feature runner with cucumber config (src/test/java ind.payUMoney.automation.behavepro.CucumberTestSuite.java)
+Package that implement the BDD steps (src/test/java ind.payUMoney.automation.payment_inquiry.chk_merchant_txn_status)
+Most features will also target StepDefinitions shared among all features (src/test/java ind.payUMoney.automation.shared)
 
-#### Feature (for example coffee)
-- Gherkin files (src/test/resources/features/order_a_coffee.feature)
-- Feature runner with cucumber config (src/test/java nl.essent.automation.coffee.CucumberTestSuite)
-- Step definitions that implement the BDD steps (src/test/java nl.essent.automation.coffee.StepDefinitions)
-- Most features will also target StepDefinitions shared among all features (src/test/java nl.essent.automation.shared)
+Example :
+
 ```
 
 @CucumberOptions(
@@ -39,89 +28,105 @@ All BDD test code (step definitions, runners) should be put in src/test/java and
         /*
          * feature file or directory
         */
-        features = "src/test/resources/features/order_a_coffee.feature",
+        features = "src/test/resources/features/chk_Merchant_Txn_Status.feature",
         /*
          * packages that contain step definitions
         */
-        glue = { "nl.essent.automation.coffee", "nl.essent.automation.shared"}
+        glue = { "ind.payUMoney.automation.payment_inquiry.chk_merchant_txn_status", "ind.payUMoney.automation.shared"}
 )
 ```
-#### MockServer
-This seed provides a WireMock runnable in ./mock-server.
 
-Endpoint configurations can be found in the mappings directory and response bodies can be found in __files.
-The response bodies are referenced by the configurations of the mappings.
+**How to Run the Project**
+
+env - Environment to run (Can be mock,tst,acc)
+Optional : -Dcucumber.options = "--tags {{tags to run}}" : Please look down the page for how to use this
+
+```
+gradlew clean test aggregate -Denv={{env}}
+```
+
+Mac OSX :
+
+```
+gradle clean test aggregate -Denv={{env}}
+```
+
+Linux :
+
+```
+./gradlew clean test aggregate -Denv={{env}}
+```
+
+**Data Management**
+
+The DataFactory is activated by the following flag:
 
 ```bash
-cd mock-server
-./run-mock-server.sh
-``` 
+-Denv=tst
+```
 
-Runs by default on localhost:7777
+First we need a json file that will contain a real value for each data value used in BDD.
+The mock values in this example are "invoice_id" and "merchant_id".
 
-#### MockData
-Mock data corresponds with the WireMock configuration. Sometimes you want to run the BDD tests with a real backend. This seed contains a mechanism to map mock data to real data.
+src/test/resources/data/tst.json
 
-Here follows an example implementation:
-
-First we need a json file that will contain a real value for each mocked value used in BDD.
-The mock values in this example are "coffee" and "tea". 
-
-src/test/resources/data/test.json
 ```json
 {
-  "foodItems": {
-    "drinks": {
-      "coffee": "Current coffee brand",
-      "tea": "Current tea brand"
+  "accounts": {
+    "default-user": {
+        "invoice_id": "INVxxxx",
+        "merchant_id": "MERxxxx"
     }
   }
 }
 ```
 
-
-All data used in the BDD scenario's that are mocked should pass through a DataFactory implementation. By default
-this DataFactory will return the passed mock value. 
+All data used in the BDD scenario's should pass through a DataFactory implementation. By default
+this DataFactory will return the passed mock value.
 
 ```java
-DataFactory.get("coffee", "foodItems.drinks.coffee");
+DataFactory.get("invoice_id", "accounts.default-user");
 // or
-DataFactory.get("coffee", "foodItems", "drinks", "coffee");
+DataFactory.get("invoice_id", "accounts", "default-user");
 
-// Both return "coffee"
-```
-
-The DataFactory can be activated by passing the following flag:
-```bash
--DtestData=test.json
-```
-
-If the testData flag is set, the output will change:
-```java
-DataFactory.get("coffee", "foodItems.drinks.coffee");
-// or
-DataFactory.get("coffee", "foodItems", "drinks", "coffee");
-
-// Both return "Current coffee brand"
+// Both return "invoice_id"
 ```
 
 To decouple the BDD implementation from the json structure a custom DataMapper should be created.
 
-src/main/java/ FoodItemsMapper
+src/main/java/ ind.payUMoney.automation.data_mappers.AccountMapper
+
 ```java
-public String getDrink(String drink) {
-    return (String) DataFactory.get(drink, "foodItems", "drinks", drink);
-}
+public String getAccountData(String dataKey) {
+        return (String) DataFactory.get(dataKey, "accounts", SessionVariableHolder.accountUnderTest, dataKey);
+    }
 // Inside a BDD test:
-getDrink("coffee");
-// Returns either: "coffee" or "Current coffee brand" (based on flag)
+accountMapper.getAccountData("invoice_id");
+// Returns : "invoice_id" (based on flags env and user to test)
 ```
+
+**Running only given tags**
+
+@node and @endpoint = these will support the test data file path.
+
+Exp: user want to access data\payment_inquiry\chk_merchant_txn_status\chk_merchant_txn_status_tst.json file.
+
+in this case node will be payment_inquiry and endpoint will be chk_merchant_txn_status.
+
 To run only a particular feature or scenario and ignore others
+
     1.Add the tag to the feature or scenario in a feature
-        Ex : 
-        @feature=coffee
-        Feature: Order a coffee
+        Ex :
+        @test-run
+          Scenario: Get update status of the transaction(s) with PayUmoney.
+			Given merchantKey is valid and merchantTransactionId is valid
+			When I trigger chkMerchantTxnStatus API request with valid authorization Id
+			Then I can see 200 Ok in the chkMerchantTxnStatus response
+			And chkMerchantTxnStatus response contains valid amount, paymentId and transaction status
+	
     2. Run the test by providing the feature tag
-        Ex : gradle test aggregate -Dcucumber.options="--tags @feature=coffee" (Mac or Windows)
-            ./gradlew test aggregate -Dcucumber.options="--tags @feature=coffee" (Linux)
+        Ex : gradle clean test aggregate -Denv={{env}} -Dcucumber.options="--tags @feature=login" (Mac or Windows)
     More Information can be found here : https://johnfergusonsmart.com/running-serenity-bdd-tests-with-tags/
+
+
+Ex: gradlew clean test aggregate -Denv="test" -Dcucumber.options="--tags @test-run"

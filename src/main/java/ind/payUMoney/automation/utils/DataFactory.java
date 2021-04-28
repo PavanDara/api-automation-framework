@@ -12,56 +12,46 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class DataFactory {
-    private static Object parsedJsonFile = null;
+    private static Object parse_json_file = null;
+    private static Object parsed_account_mapper_file = null;
 
-    public static void parseDataFile() {
-        String testData = System.getProperty("testData");
-        if (testData != null && !testData.equals("")) {
+    public static void parseDataFile(String nodeName, String endPointName) throws Exception {
+        if (SessionVariableHolder.environment_under_test != null && !SessionVariableHolder.environment_under_test.equals("")) {
             JSONParser parser = new JSONParser();
-            try {
-                BufferedReader reader = ResourceLoader.load("data/" + testData);
-                parsedJsonFile = parser.parse(reader);
-            } catch (Exception e) {
-                if (e instanceof IOException) {
-                    throw new RuntimeException("File not found " + testData);
-                } else if (e instanceof ParseException) {
-                    throw new RuntimeException("Error parsing " + testData);
-                } else {
-                    e.printStackTrace();
-                }
-            }
+//            BufferedReader reader = ResourceLoader.load("data/" + SessionVariableHolder.environment_under_test + ".json");
+//            parse_json_file = parser.parse(reader);
+            BufferedReader reader = ResourceLoader.load("data/" + nodeName + "/" + endPointName + "/" + endPointName + "_" + SessionVariableHolder.environment_under_test + ".json");
+            parsed_account_mapper_file = parser.parse(reader);
         }
     }
 
-    /*
-     * Example usage:
-     * test.json
-     * {
-     *     "accounts": {
-     *         "household": {
-     *             "username": "RealUsername"
-     *         }
-     *     }
-     * }
-     *
-     * DataFactory.get("household", "accounts.household.username");
-     * DataFactory.get("household", "accounts", "household", "username");
-     * Returns:
-     *      If testData flag is provided: "RealUsername"
-     *      If no flag is provided: "household"
-     *
-     * Also works with arrays: DataFactory.get("household", "accounts.household[0].username");
-     */
     public static Object get(String mockValue, String lookup) {
         return get(mockValue, lookup.split("\\."));
     }
 
     public static Object get(String mockValue, String... lookup) {
-        if (parsedJsonFile != null) {
-            return mapData(parsedJsonFile, lookup);
+        if (parse_json_file != null) {
+            return mapData(parse_json_file, lookup);
         } else {
             return mockValue;
         }
+    }
+
+    public static Object get(boolean accountMapper, String mockValue, String... lookup) {
+        if (accountMapper) {
+            if (parsed_account_mapper_file != null) {
+                return mapData(parsed_account_mapper_file, lookup);
+            } else {
+                return mockValue;
+            }
+        } else {
+            if (parse_json_file != null) {
+                return mapData(parse_json_file, lookup);
+            } else {
+                return mockValue;
+            }
+        }
+
     }
 
     private static Object mapData(Object jsonContent, String... keys) {

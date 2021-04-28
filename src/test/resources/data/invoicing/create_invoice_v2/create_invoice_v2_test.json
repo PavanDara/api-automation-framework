@@ -1,0 +1,10 @@
+{
+  "accounts": {
+    "default-user": {
+      "invoice_id": "INVxxxx",
+      "merchant_id": "MERxxxx",
+      "username": "9999999999",
+      "password": "fsd1@123"
+    }
+  }
+}
