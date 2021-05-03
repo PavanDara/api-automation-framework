@@ -1,5 +1,8 @@
 #### Automation of PayUMoney APIs
 
+Swagger for PayUMoney API
+https://www.payumoney.com/dev-guide/apireference.html
+
 **Pre-requisites :**  
 Java Run Time Environment installed on the system
 
